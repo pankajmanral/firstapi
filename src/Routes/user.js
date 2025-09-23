@@ -1,26 +1,34 @@
 const express = require('express')
 const router = express.Router()
-const User = require('../Model/user')
-
-// add new user to the database
+const userModel = require('../Model/user')
 
 router.post('/register', async (req, res) => { 
     try {
         
-        // get the data from request body
-        const {name, age} = req.body
+        // destructure
+        const {name, age} = req.body;
 
-        const newUser = new User({name, age});
-        await newUser.save()
+        // check if the name already exists 
+        const existingUser = await userModel.findOne({name})
+        if(existingUser){
+            return res.status(400).json({
+                message : "User already exist"
+            })
+        }
+
+        const userObj = new userModel({name, age})
+        await userObj.save()
 
         res.status(200).json({
-            message : "User registration successful",
-            user : newUser
+            message : "Registration Successfull",
+            user : userObj
         })
 
     } catch (error) {
-  
-        res.status(400).json({message : error.message})
+        
+        res.status(400).json({
+            message : error.message
+        })
 
     }
 })

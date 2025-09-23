@@ -1,7 +1,7 @@
 // this file contains the information about the db string
 
 const mongoose = require('mongoose')
-const mongooseURI = 'mongodb://localhost:27017/?directConnection=true'
+const mongooseURI = 'mongodb://localhost:27017/testDB'
 
 const connectToMongo = async() => {
     try {
